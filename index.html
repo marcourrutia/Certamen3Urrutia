@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href="src/movie.ico">
+    <title>WebPelis</title>
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">RUN</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Estado Civil</th>
+                <th scope="col">Fecha de Nacimiento</th>
+                <th scope="col">Contraseña</th>
+            </tr>
+        </thead>
+        <tbody id="llenarclientes">
+
+        </tbody>
+    </table>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Nuevo Cliente
+  </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ingreso de nuevo Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="inputRun">RUN</label>
+                            <input type="text" class="form-control" id="inputRun" placeholder="Ingrese RUN" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNombre">Nombre</label>
+                            <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese Nombre" maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Email</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese Email" maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCelular">Celular</label>
+                            <input type="number" class="form-control" id="inputCelular" placeholder="Ingrese Celular" maxlength="11">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDireccion">Direccion</label>
+                            <input type="text" class="form-control" id="inputDireccion" placeholder="Ingrese Direccion" maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="selectEstado">Estado Civil</label>
+                            <select class="form-control" id="selectEstado">
+                                <option value="Soltero">Soltero(a)</option>
+                                <option value="Casado">Casado(a)</option>
+                                <option value="Divorciado">Divorciado(a)</option>
+                                <option value="Viudo">Viudo(a)</option>
+                              </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFnacto">Direccion</label>
+                            <input type="date" class="form-control" id="inputFnacto" placeholder="Ingrese Fecha de Nacimiento">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContraseña">Contraseña</label>
+                            <input type="password" class="form-control" id="inputContraseña" placeholder="Ingrese Contraseña">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            cargarClientes();
+        });
+
+        function cargarClientes() {
+            $.ajax({
+                url: 'http://localhost:64618/api/clientes',
+                type: 'GET',
+                dataType: 'json',
+                success: function(result, status, xhr) {
+                    let html = '';
+                    for (let item of result.data) {
+                        html += '<tr>';
+                        html += '<td>' + item.rut + '</td>';
+                        html += '<td>' + item.nombre + '</td>';
+                        html += '<td>' + item.mail + '</td>';
+                        html += '<td>' + item.direccion + '</td>';
+                        html += '<td>' + item.celular + '</td>';
+                        html += '<td>' + item.estado + '</td>';
+                        html += '<td>' + item.fecha_nac + '</td>';
+                        html += '<td>' + item.clave + '</td>';
+                        html += '</tr>';
+                    }
+
+                    $('#llenarclientes').html(html);
+                },
+                error: function(xhr, status) {
+                    console.log('fallo la solicitud');
+                }
+            })
+        }
+    </script>
+</body>
+
+
+</html>
